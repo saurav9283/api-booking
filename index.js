@@ -45,6 +45,11 @@ app.use((err, req, res, next) => {
   });
 });
 
+//Default route
+app.get("/", (req, res) => {
+  res.send("The backend server is working!");
+});
+
 app.listen(8800, () => {
   connect();
   console.log("Connected to backend.");
