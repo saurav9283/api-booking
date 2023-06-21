@@ -9,17 +9,24 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 
 const app = express();
+const port = process.env.PORT || 8080;
 dotenv.config();
 
-const connect = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO);
-    console.log("Connected to mongoDB.");
-  } catch (error) {
-    throw error;
-  }
-};
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', '*');
+  res.header('Access-Control-Allow-Methods', '*');  
+  next();
+});
 
+// Configure body-parser middleware to handle JSON data
+app.use(bodyParser.json());
+
+// Connect to the MongoDB database
+mongoose.connect(process.env.MONGO, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 mongoose.connection.on("disconnected", () => {
   console.log("mongoDB disconnected!");
 });
@@ -50,7 +57,7 @@ app.get("/", (req, res) => {
   res.send("The backend server is working!");
 });
 
-app.listen(3000, () => {
-  connect();
-  console.log("Connected to backend.");
+// Start the server
+app.listen(port, () => {
+  console.log("Server started on port " + port);
 });
