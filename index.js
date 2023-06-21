@@ -50,7 +50,7 @@ app.get("/", (req, res) => {
   res.send("The backend server is working!");
 });
 
-app.listen(8800, () => {
+app.listen(3000, () => {
   connect();
   console.log("Connected to backend.");
 });
